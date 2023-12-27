@@ -208,16 +208,16 @@ def number_to_text(num):
         9: "kyuu hyaku",
     }
     thaus_dict = {
-        0: "",
-        1: "sen",
-        2: "ni sen",
-        3: "san zen",
-        4: "yon sen",
-        5: "go sen",
-        6: "roku sen",
-        7: "nana sen",
-        8: "hassen",
-        9: "kyuu sen",
+        0: [""],
+        1: ["sen", "issen"],
+        2: ["ni sen"],
+        3: ["san zen"],
+        4: ["yon sen"],
+        5: ["go sen"],
+        6: ["roku sen"],
+        7: ["nana sen"],
+        8: ["hassen"],
+        9: ["kyuu sen"],
     }
     if num < 0 or num > 9999:
         return "The given number is outside the supported range"
@@ -225,12 +225,10 @@ def number_to_text(num):
     leng = len(digits)
     if leng == 1 and digits[0] == 0:
         return ones_dict[0]
-    if leng == 4 and num == 1000:
-        return ["sen", "issen"]
     ones = ones_dict[int(digits[-1])]
     tens = ""
     hunds = ""
-    thaus = ""
+    thaus = []
     if leng > 1:
         tens = tens_dict[int(digits[-2])]
     if leng > 2:
@@ -240,9 +238,10 @@ def number_to_text(num):
 
     result = []
     for one in ones:
-        raw = (thaus + " " + hunds + " " + tens + " " + one).strip()
-        raw = " ".join(raw.split())
-        result.append(raw)
+        for thau in thaus:
+            raw = (thau + " " + hunds + " " + tens + " " + one).strip()
+            raw = " ".join(raw.split())
+            result.append(raw)
     return result
     
         
@@ -289,14 +288,14 @@ class RandomNumberGame:
         self.score_label.grid(row=4, column=0, pady=10, sticky="nsew")
 
     def generate_random_number(self):
-        choice = randint(1, 10)
-        if 1 <= choice <= 2:
+        choice = randint(1, 7)
+        if 1 <= choice <= 1:
             return randint(0, 9)
-        elif 3 <= choice <= 6:
+        elif 2 <= choice <= 3:
             return randint(10, 99)
-        elif 7 <= choice <= 9:
+        elif 4 <= choice <= 5:
             return randint(100, 999)
-        elif 10 <= choice <= 10:
+        elif 6 <= choice <= 7:
             return randint(1000, 9999)
 
     def check_input(self):
